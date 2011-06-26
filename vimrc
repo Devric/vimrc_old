@@ -31,7 +31,38 @@ set so=7
 
 set wildmenu "turn on wild menu
 
+set showcmd
+
 set ruler " show ruller
+
+"Always show the status line
+set laststatus=2
+
+set mousehide
+
+"http://vim.wikia.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
+set completeopt=longest,menuone
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <c-n> pumvisible() ? "\<lt>c-n>" : "\<lt>c-n>\<lt>c-r>=pumvisible() ? \"\\<lt>down>\" : \"\"\<lt>cr>"
+inoremap <expr> <m-;> pumvisible() ? "\<lt>c-n>" : "\<lt>c-x>\<lt>c-o>\<lt>c-n>\<lt>c-p>\<lt>c-r>=pumvisible() ? \"\\<lt>down>\" : \"\"\<lt>cr>"
+"
+"Map escape key to jj -- much faster
+imap jj <esc>
+
+"Bubble single lines (kicks butt)
+"http://vimcasts.org/episodes/bubbling-text/
+nmap <C-Up> ddkP
+nmap <C-Down> ddp
+vmap <C-Up> xkP`[V`]
+vmap <C-Down> xp`[V`]
+
+"reload vimrc
+if has("autocmd")
+  autocmd bufwritepost .vimrc source $MYVIMRC
+endif
+
+" make 'vi' less anoying when commands dont work
+set vb t_vb=
 
 " Set backspace config
 set backspace=eol,start,indent
@@ -104,6 +135,8 @@ set nojoinspaces
 """"""""""""""""""""""""""""""""""""""""""""""""
 colorschem solarized
 set background=dark
+call togglebg#map("<F5>")
+
 
 if has("gui_running")
 set transparency=5
@@ -189,8 +222,22 @@ inoremap <C-l> <ESC>v>i
 nnoremap <C-h> <ESC>v<<ESC>
 nnoremap <C-l> <ESC>v><ESC>
 
+
 " fast command line access in normal mode
 nmap <space> :
+
+" auto space at operations
+ino <= <space><=<space>
+ino *= <space>*=<space>
+ino /= <space>/=<space>
+ino >> <space>>><space>
+ino << <space><<<space>
+ino >= <space>>=<space>
+ino == <space>==<space>
+ino += <space>+=<space>
+ino && <space>&&<space>
+ino != <space>!=<space>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""
 "ctags
@@ -273,7 +320,6 @@ au BufRead,BufNewFile *.txt		setfiletype org
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => tabular
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let mapleader=','
 if exists(":Tabularize")
   nmap <Leader>a= :Tabularize /=<CR>
   vmap <Leader>a= :Tabularize /=<CR>
@@ -300,4 +346,39 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Php documentator
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+source ~/.vim/php-doc.vim 
+inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i 
+nnoremap <C-P> :call PhpDocSingle()<CR> 
+vnoremap <C-P> :call PhpDocRange()<CR> 
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => css folds
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! CssFoldText()
+    let line = getline(v:foldstart)
+    let nnum = nextnonblank(v:foldstart + 1)
+    while nnum < v:foldend+1
+        let line = line . " " . substitute(getline(nnum), "^ *", "", "g")
+        let nnum = nnum + 1
+    endwhile
+    return line
+endfunction
+
+setlocal foldtext=CssFoldText()
+setlocal foldmethod=marker
+setlocal foldmarker={,}
+setlocal fillchars=fold:\ 
+
+
+hi htmlTag          guifg=#00bdec   guibg=#200000            gui=bold
+
+imap <Leader>date   <C-R>=strftime("%d/%m/%y")<CR>
+imap <Leader>time   <C-R>=strftime("%T")<CR>
 
