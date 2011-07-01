@@ -19,7 +19,7 @@ class `ClassName^
 
 
 XPT fun hint=function
-`public^ function `function_name^('`var^')
+`public ^function `function_name^(`var^)
 { 
     `method^
 }

@@ -376,9 +376,8 @@ setlocal foldmethod=marker
 setlocal foldmarker={,}
 setlocal fillchars=fold:\ 
 
-
-hi htmlTag          guifg=#00bdec   guibg=#200000            gui=bold
-
 imap <Leader>date   <C-R>=strftime("%d/%m/%y")<CR>
 imap <Leader>time   <C-R>=strftime("%T")<CR>
 
+" use ; for <Leader>
+let mapleader = ";"

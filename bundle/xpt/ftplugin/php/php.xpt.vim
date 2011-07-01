@@ -63,7 +63,7 @@ foreach ($`var^ as `container^)`$BRloop^{
 XPT fun " function ..( .. ) {..}
 XSET params=Void()
 XSET params|post=EchoIfEq('  ', '')
-function `funName^(` `params` ^)`$BRfun^{
+function `funName^(`params^)`$BRfun^{
     `cursor^
 }
 

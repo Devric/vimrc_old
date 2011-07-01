@@ -1,9 +1,2 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/Users/Devric/Desktop/ricfons_ebay'
-let g:netrw_dirhist_2='/Users/Devric/Desktop/Devric portfolios/Resources library/web/css/dev_css/developing'
-let g:netrw_dirhist_3='/Users/Devric/Desktop/ricfons_ebay'
-let g:netrw_dirhist_4='/Users/Devric/Library/Scripts/newEvent.app'
-let g:netrw_dirhist_5='/Users/Devric/Documents/Devric portfolios/Resources library/web/css/lessxless/centage'
-let g:netrw_dirhist_6='/Users/Devric/Downloads/web/SimpleGrid/css'
-let g:netrw_dirhist_7='/Users/Devric/Sites/php/pa/less'
+let g:netrw_dirhist_cnt =0
