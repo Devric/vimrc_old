@@ -10,8 +10,8 @@ XPT class
  * `comment^
  */
 class `ClassName^
-{
-    function `__construct^}(`argument^)
+
+    function `__construct^(`argument^)
     {
     	`code^
     }

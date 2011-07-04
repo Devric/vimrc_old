@@ -40,12 +40,24 @@ set laststatus=2
 
 set mousehide
 
+
 "http://vim.wikia.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
 set completeopt=longest,menuone
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 inoremap <expr> <c-n> pumvisible() ? "\<lt>c-n>" : "\<lt>c-n>\<lt>c-r>=pumvisible() ? \"\\<lt>down>\" : \"\"\<lt>cr>"
 inoremap <expr> <m-;> pumvisible() ? "\<lt>c-n>" : "\<lt>c-x>\<lt>c-o>\<lt>c-n>\<lt>c-p>\<lt>c-r>=pumvisible() ? \"\\<lt>down>\" : \"\"\<lt>cr>"
-"
+
+" AutoComplPop
+if !exists('g:AutoComplPop_Behavior')
+    let g:AutoComplPop_Behavior = {}
+    let g:AutoComplPop_Behavior['php'] = []
+    call add(g:AutoComplPop_Behavior['php'], {
+            \   'command'   : "\<C-x>\<C-o>", 
+            \   'pattern'   : printf('\(->\|::\|\$\)\k\{%d,}$', 0),
+            \   'repeat'    : 0,
+            \})
+endif
+
 "Map escape key to jj -- much faster
 imap jj <esc>
 
@@ -139,11 +151,10 @@ call togglebg#map("<F5>")
 
 
 if has("gui_running")
-set transparency=5
-endif
-
 set guioptions-=T " no toolbar
 "set guioptions-+m " no menu
+set transparency=5
+endif
 
 "Make the completion menus readable
 highlight Pmenu ctermfg=0 ctermbg=3
@@ -243,32 +254,51 @@ ino != <space>!=<space>
 "ctags
 """""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""""""""""ctags
-"let Tlist_Ctags_Cmd='d:\coding\ctag\ctags.exe'
-"" Auto open TagList on supported files
-"let Tlist_Auto_Open = 1
-"" Exit if TagList is the only window left
-"let Tlist_Exit_OnlyWindow = 1
-"" Auto close the fold for inactive files
-"let Tlist_File_Fold_Auto_Close = 1
-"" Only show the current file in TagList
-""let Tlist_Show_One_File = 
+" Ctags {
+        " This will look in the current directory for 'tags', and work up the tree towards root until one is found. 
+        set tags=./tags;/,$HOME/vimtags
+        map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>      " A-] - Open the definition in a vertical split
+" }
 
-"map <F1> :silent! Tlist<CR>
-"let Tlist_Use_Right_Window=0 
-"let Tlist_Show_One_File=0 
-"let Tlist_Process_File_Always=1 
-"let Tlist_Auto_Update=1
+" Taglist Variables {
+
+
+        map <F1> :silent! Tlist<CR>
+
+        let Tlist_Ctags_Cmd='/opt/local/var/macports/software/ctags/5.8_0/opt/local/bin/ctags'
+        " Auto open TagList on supported files
+        let Tlist_Auto_Open = 1
+        " Exit if TagList is the only window left
+        let Tlist_Exit_OnlyWindow = 1
+        "" Auto close the fold for inactive files
+        " let Tlist_File_Fold_Auto_Close = 1
+        "" Only show the current file in TagList
+        " let Tlist_Show_One_File = 1
+
+        let Tlist_Use_Right_Window=0 
+        let Tlist_Process_File_Always=1 
+        let Tlist_Auto_Update=1
+        let Tlist_Auto_Highlight_Tag = 1
+        let Tlist_Highlight_Tag_On_BufEnter = 1
+        let Tlist_Use_SingleClick = 1
+
+        let g:ctags_statusline=1
+        " Override how taglist does javascript
+        let g:tlist_javascript_settings = 'javascript;f:function;c:class;m:method;p:property;v:global'
+        " }
+
 
 """"""""""""""""""""""""""""""
 " => Minibuffer plugin
 """"""""""""""""""""""""""""""
-let g:miniBufExplModSelTarget = 1
-let g:miniBufExplorerMoreThanOne = 2
-let g:miniBufExplModSelTarget = 0
-let g:miniBufExplUseSingleClick = 1
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplVSplit = 25
-let g:miniBufExplSplitBelow=1
+"let g:miniBufExplVSplit = 25          " assing column widht in vertical mode
+let g:miniBufExplModSelTarget = 1      " active when using with taglist
+let g:miniBufExplorerMoreThanOne = 2   " only activate when more then one buffer
+let g:miniBufExplUseSingleClick = 1    " single click to change file
+let g:miniBufExplMapWindowNavVim = 1   " hjkl mappig
+let g:miniBufExplSplitBelow=0          " 1= below, 0= above
+let g:miniBufExplMapCTabSwitchBufs = 1 " tab s-tab navigation
+
 
 let g:bufExplorerSortBy = "name"
 
@@ -280,7 +310,14 @@ map <leader>u :TMiniBufExplorer<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Omni complete functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"autocmd FileType php set omnifunc=phpcomplete#Complet
 "autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+"autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+"autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+"autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+"
+imap <C-r> <C-x><C-o>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim organiser
@@ -342,10 +379,33 @@ endfunction
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => NerdTree
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    " NerdTree {
+        map <C-e> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
+
+        let NERDTreeShowBookmarks=1
+        let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+        let NERDTreeChDirMode=0
+        let NERDTreeQuitOnOpen=1
+        let NERDTreeShowHidden=1
+        let NERDTreeKeepTreeInNewTab=1
+    " }
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => MISC
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+" Change Working Directory to that of the current file
+cmap cwd lcd %:p:h
+cmap cd. lcd %:p:h
+
+" visual shifting (does not exit Visual mode)
+vnoremap < <gv
+vnoremap > >gv 
 
 
 
@@ -381,3 +441,10 @@ imap <Leader>time   <C-R>=strftime("%T")<CR>
 
 " use ; for <Leader>
 let mapleader = ";"
+
+
+" PHP Generated Code Highlights (HTML & SQL)
+let php_sql_query=1
+let php_htmlInStrings=1
+let g:php_folding=2
+set foldmethod=syntax
