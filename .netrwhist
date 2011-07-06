@@ -1,5 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_cnt =6
 let g:netrw_dirhist_1='/Users/Devric/Sites/php/obj'
 let g:netrw_dirhist_2='/Users/Devric/Sites/cart/ricfons/modules/blockcms'
 let g:netrw_dirhist_3='/Users/Devric/Sites/php/obj'
+let g:netrw_dirhist_4='/Users/Devric/Sites/learn/yii_agile'
+let g:netrw_dirhist_5='/Users/Devric/Sites/php/obj'
+let g:netrw_dirhist_6='/Users/Devric/Sites/learn'

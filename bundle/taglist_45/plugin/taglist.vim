@@ -363,6 +363,50 @@ let loaded_taglist = 'available'
 "               tags of this type
 "
 
+" list of supported languages
+let s:tlist_supported_filetype = [
+            \ "asm",
+            \ "asp",
+            \ "aspperl",
+            \ "aspvbs",
+            \ "amk",
+            \ "beta",
+            \ "c",
+            \ "cpp",
+            \ "cs",
+            \ "cobol",
+            \ "css",
+            \ "eiffel",
+            \ "erlang",
+            \ "tcl",
+            \ "expect",
+            \ "fortran",
+            \ "html",
+            \ "java",
+            \ "javascript",
+            \ "lisp",
+            \ "lua",
+            \ "make",
+            \ "pascal",
+            \ "perl",
+            \ "php",
+            \ "python",
+            \ "rexx",
+            \ "ruby",
+            \ "scheme",
+            \ "sh",
+            \ "csh",
+            \ "zsh",
+            \ "slang",
+            \ "sml",
+            \ "sql",
+            \ "tcl",
+            \ "vera",
+            \ "verilog",
+            \ "vim",
+            \ "yacc",
+            \ ]
+
 " assembly language
 let s:tlist_def_asm_settings = 'asm;d:define;l:label;m:macro;t:type'
 
@@ -394,6 +438,9 @@ let s:tlist_def_cs_settings = 'c#;d:macro;t:typedef;n:namespace;c:class;' .
 " cobol language
 let s:tlist_def_cobol_settings = 'cobol;d:data;f:file;g:group;p:paragraph;' .
                                \ 'P:program;s:section'
+
+" css language
+let s:tlist_def_css_settings = 'css;c:class;i:id;s:selector'
 
 " eiffel language
 let s:tlist_def_eiffel_settings = 'eiffel;c:class;f:feature'
@@ -953,6 +1000,24 @@ function! s:Tlist_FileType_Init(ftype)
     return 1
 endfunction
 
+" Tlist_Detect_MultiFiletypes
+" Detect supported filetype of buffer with multiple FileTypes
+function! s:Tlist_Detect_MultiFiletypes(obj)
+    let ftype = ""
+    if a:obj =~ '\.'
+        let ftarray = split(a:obj, '\.')
+        for eachtype in ftarray
+            let x = index(s:tlist_supported_filetype, eachtype)
+            if x >= 0
+                let ftype = s:tlist_supported_filetype[x]
+            elseif x == -1
+                let ftype = a:obj
+            endif
+        endfor
+    endif
+    return ftype
+endfunction
+
 " Tlist_Detect_Filetype
 " Determine the filetype for the specified file using the filetypedetect
 " autocmd.
@@ -968,7 +1033,7 @@ function! s:Tlist_Detect_Filetype(fname)
     " the filetype
     exe 'doautocmd filetypedetect BufRead ' . a:fname
 
-    " Save the detected filetype
+        " Save the detected filetype
     let ftype = &filetype
 
     " Restore the previous state
@@ -981,28 +1046,27 @@ endfunction
 " Tlist_Get_Buffer_Filetype
 " Get the filetype for the specified buffer
 function! s:Tlist_Get_Buffer_Filetype(bnum)
+        " Skip non-existent buffers
+    if !bufexists(a:bnum)
+        let ftype = ''
+    endif
+
     let buf_ft = getbufvar(a:bnum, '&filetype')
 
-    if bufloaded(a:bnum)
-        " For loaded buffers, the 'filetype' is already determined
-        return buf_ft
-    endif
-
-    " For unloaded buffers, if the 'filetype' option is set, return it
     if buf_ft != ''
-        return buf_ft
-    endif
-
-    " Skip non-existent buffers
-    if !bufexists(a:bnum)
-        return ''
+        " Detect filetype
+        let buf_ft = s:Tlist_Detect_MultiFiletypes(buf_ft)
+        let ftype = buf_ft
     endif
 
     " For buffers whose filetype is not yet determined, try to determine
     " the filetype
-    let bname = bufname(a:bnum)
+    if buf_ft == ''
+        let bname = bufname(a:bnum)
+        let ftype = s:Tlist_Detect_Filetype(bname)
+    endif
 
-    return s:Tlist_Detect_Filetype(bname)
+    return ftype
 endfunction
 
 " Tlist_Discard_TagInfo
@@ -1414,22 +1478,22 @@ function! s:Tlist_Window_Exit_Only_Window()
     " Before quitting Vim, delete the taglist buffer so that
     " the '0 mark is correctly set to the previous buffer.
     if v:version < 700
-	if winbufnr(2) == -1
-	    bdelete
-	    quit
-	endif
+    if winbufnr(2) == -1
+        bdelete
+        quit
+    endif
     else
-	if winbufnr(2) == -1
-	    if tabpagenr('$') == 1
-		" Only one tag page is present
-		bdelete
-		quit
-	    else
-		" More than one tab page is present. Close only the current
-		" tab page
-		close
-	    endif
-	endif
+    if winbufnr(2) == -1
+        if tabpagenr('$') == 1
+        " Only one tag page is present
+        bdelete
+        quit
+        else
+        " More than one tab page is present. Close only the current
+        " tab page
+        close
+        endif
+    endif
     endif
 endfunction
 
@@ -1668,8 +1732,8 @@ function! s:Tlist_Window_Init()
         endif
         " Exit Vim itself if only the taglist window is present (optional)
         if g:Tlist_Exit_OnlyWindow
-	    autocmd BufEnter __Tag_List__ nested
-			\ call s:Tlist_Window_Exit_Only_Window()
+        autocmd BufEnter __Tag_List__ nested
+            \ call s:Tlist_Window_Exit_Only_Window()
         endif
         if s:tlist_app_name != "winmanager" &&
                     \ !g:Tlist_Process_File_Always &&

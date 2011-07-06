@@ -40,9 +40,8 @@ set laststatus=2
 
 set mousehide
 
-
 "http://vim.wikia.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
-set completeopt=longest,menuone
+set completeopt=longest,menuone,preview
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 inoremap <expr> <c-n> pumvisible() ? "\<lt>c-n>" : "\<lt>c-n>\<lt>c-r>=pumvisible() ? \"\\<lt>down>\" : \"\"\<lt>cr>"
 inoremap <expr> <m-;> pumvisible() ? "\<lt>c-n>" : "\<lt>c-x>\<lt>c-o>\<lt>c-n>\<lt>c-p>\<lt>c-r>=pumvisible() ? \"\\<lt>down>\" : \"\"\<lt>cr>"
@@ -57,16 +56,6 @@ if !exists('g:AutoComplPop_Behavior')
             \   'repeat'    : 0,
             \})
 endif
-
-"Map escape key to jj -- much faster
-imap jj <esc>
-
-"Bubble single lines (kicks butt)
-"http://vimcasts.org/episodes/bubbling-text/
-nmap <C-Up> ddkP
-nmap <C-Down> ddp
-vmap <C-Up> xkP`[V`]
-vmap <C-Down> xp`[V`]
 
 "reload vimrc
 if has("autocmd")
@@ -193,9 +182,21 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""
 " Key bindings
 """"""""""""""""""""""""""""""""""""""""""""""""
+" use ; for <Leader>
+let mapleader = ";"
 
-"Note <leader> is the user modifier key (like g is the vim modifier key)
-"One can change it from the default of \ using: let mapleader = ","
+"Map escape key to jj -- much faster
+imap jj <esc>
+
+imap <Leader>date   <C-R>=strftime("%d/%m/%y")<CR>
+imap <Leader>time   <C-R>=strftime("%T")<CR>
+
+"Bubble single lines (kicks butt)
+"http://vimcasts.org/episodes/bubbling-text/
+nmap <C-Up> ddkP
+nmap <C-Down> ddp
+vmap <C-Up> xkP`[V`]
+vmap <C-Down> xp`[V`]
 
 "\n to turn off search highlighting
 nmap <silent> <leader>n :silent :nohlsearch<CR>
@@ -214,13 +215,29 @@ map <A-h> <C-W>h
 map <A-l> <C-W>l
 
 " Close the current buffer
-map <leader>bd :Bclose<cr>
+map <leader>bd :bd<cr>
 
 " Tab configuration
 map <leader>tn :tabnew<cr>
 map <leader>te :tabedit
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
+
+" 1 current
+" 2 m
+" 3 v
+" 4 c
+" 5 css
+" 6 jss
+
+nmap <leader>t1 :tabfirst<cr>
+nmap <leader>t2 2gt
+nmap <leader>t3 3gt
+nmap <leader>t4 4gt
+nmap <leader>t5 5gt
+nmap <leader>t6 6gt
+
+nmap <leader>s :vsp<cr>
 
 " Use the arrows to something usefull
 map <right> :bn<cr>
@@ -230,8 +247,8 @@ map <left> :bp<cr>
 inoremap <C-h> <ESC>v<i
 inoremap <C-l> <ESC>v>i
 
-nnoremap <C-h> <ESC>v<<ESC>
-nnoremap <C-l> <ESC>v><ESC>
+vnoremap <C-h> <ESC>v<<ESC>
+vnoremap <C-l> <ESC>v><ESC>
 
 
 " fast command line access in normal mode
@@ -265,7 +282,8 @@ ino != <space>!=<space>
 
         map <F1> :silent! Tlist<CR>
 
-        let Tlist_Ctags_Cmd='/opt/local/var/macports/software/ctags/5.8_0/opt/local/bin/ctags'
+        "let Tlist_Ctags_Cmd='/opt/local/var/macports/software/ctags/5.8_0/opt/local/bin/ctags'
+        let Tlist_Ctags_Cmd='/usr/local/bin/ctags'
         " Auto open TagList on supported files
         let Tlist_Auto_Open = 1
         " Exit if TagList is the only window left
@@ -310,12 +328,15 @@ map <leader>u :TMiniBufExplorer<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Omni complete functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"autocmd FileType php set omnifunc=phpcomplete#Complet
+setlocal completefunc=php#complete#CodeComplete
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+au FileType php set omnifunc=phpcomplete#CompletePHP
+"
 "autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 "autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 "autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 "autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-"
+
 imap <C-r> <C-x><C-o>
 
 
@@ -392,6 +413,15 @@ endfunction
         let NERDTreeKeepTreeInNewTab=1
     " }
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => browser refresh
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:RefreshRunningBrowserDefault = 'safari'
+" let g:RefreshRunningBrowserDefault = 'chrome'
+" let g:RefreshRunningBrowserDefault = 'firefox'
+" let g:RefreshRunningBrowserReturnFocus = '0'
+map <silent><Leader>r :RRB<CR>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => MISC
@@ -428,7 +458,7 @@ function! CssFoldText()
         let line = line . " " . substitute(getline(nnum), "^ *", "", "g")
         let nnum = nnum + 1
     endwhile
-    return line
+return line
 endfunction
 
 setlocal foldtext=CssFoldText()
@@ -436,11 +466,6 @@ setlocal foldmethod=marker
 setlocal foldmarker={,}
 setlocal fillchars=fold:\ 
 
-imap <Leader>date   <C-R>=strftime("%d/%m/%y")<CR>
-imap <Leader>time   <C-R>=strftime("%T")<CR>
-
-" use ; for <Leader>
-let mapleader = ";"
 
 
 " PHP Generated Code Highlights (HTML & SQL)
@@ -448,3 +473,44 @@ let php_sql_query=1
 let php_htmlInStrings=1
 let g:php_folding=2
 set foldmethod=syntax
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => backup files
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! InitBackupDir()
+    let separator = "."
+    let parent = $HOME .'/' . separator . 'vim/'
+    let backup = parent . 'backup/'
+    let tmp    = parent . 'tmp/'
+    if exists("*mkdir")
+        if !isdirectory(parent)
+            call mkdir(parent)
+        endif
+        if !isdirectory(backup)
+            call mkdir(backup)
+        endif
+        if !isdirectory(tmp)
+            call mkdir(tmp)
+        endif
+    endif
+    let missing_dir = 0
+    if isdirectory(tmp)
+        execute 'set backupdir=' . escape(backup, " ") . "/,."
+    else
+        let missing_dir = 1
+    endif
+    if isdirectory(backup)
+        execute 'set directory=' . escape(tmp, " ") . "/,."
+    else
+        let missing_dir = 1
+    endif
+    if missing_dir
+        echo "Warning: Unable to create backup directories: " 
+        . backup ." and " . tmp
+        echo "Try: mkdir -p " . backup
+        echo "and: mkdir -p " . tmp
+        set backupdir=.                 
+        set directory=.
+    endif
+endfunction          
+call InitBackupDir()

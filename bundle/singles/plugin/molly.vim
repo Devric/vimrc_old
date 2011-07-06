@@ -14,6 +14,7 @@ let s:query = ""
 let s:bufferOpen = 0
 
 function! s:MollyController()
+    let s:filelist = split(globpath(".", "**"), "\n")
   if s:bufferOpen
     call ShowBuffer()
   else
@@ -21,7 +22,6 @@ function! s:MollyController()
     execute "sp molly"
     call BindKeys()
     call SetLocals()
-    let s:filelist = split(globpath(".", "**"), "\n")
     call WriteToBuffer(s:filelist)
   endif
 endfunction
