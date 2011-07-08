@@ -5,11 +5,19 @@ let s:f = g:XPTfuncs()
 " =======================function and variables ==============================
 
 " =======================snippets ============================================
+XPT var
+`public^ $`function^;
+
 XPT class
 /**
  * `comment^
  */
+
+
 class `ClassName^
+{
+    `repeat...^`var^
+    `repeat...^
 
     function `__construct^(`argument^)
     {

@@ -1,0 +1,52 @@
+this file use for future cheat sheet creation
+plugin used 'vim org mode', 'tabularize'
+
+set ft=org
+
+----------------
+# snippets  
+----------------
+
+php 
+codeigniter
+yii
+
+----------------
+
+
+* php
+* codeigniter
+** load
+ | ------ | ---------- | ------------- |
+ | basic  | thismodel  | load model    |
+ |        | thisview   | load view     |
+ |        | thisconf   | load config   |
+ |        | thishelper | load helper   |
+ |        | thislib    | load library  |
+ |        | thisplugin | load plugin   |
+
+** controller
+ | ------   | ---------- | ------------------------------------- |
+ | initiate | c_c        | creating new controler class          |
+
+** model
+ | ------   | ---------- | ------------------------------------- |
+ | initiate | c_m        | creating new model class              |
+
+** view
+ | ------   | ---------- | ------------------------------------- |
+ | initiate | c_m        | creating new model class              |
+
+** doctrine
+ | ------   | ---------- | ------------------------------------- |
+ | initiate | c_d        | creating new doctrine class           |
+
+** query
+ | ------    | ----------   | ------------------------------------- |
+ | operation | c_dbcount    | count                                 |
+ |           | c_dbcountall | count all                             |
+ |           | c_dbdel      | delete                                |
+
+
+* yii
+* cakephp

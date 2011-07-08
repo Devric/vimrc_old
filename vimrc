@@ -23,6 +23,14 @@ set history=128
 set viminfo='20,\"50    " read/write a .viminfo file, don't store more
                         " than 50 lines of registers
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => php manual 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" set runtimepath+=~/.vim/doc/
+" autocmd BufNewFile,Bufread *.php,*.php3,*.php4 set keywordprg="help"
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -243,28 +251,12 @@ nmap <leader>s :vsp<cr>
 map <right> :bn<cr>
 map <left> :bp<cr>
 
-" use control h and l to indent line in insert mode and visual mode
-inoremap <C-h> <ESC>v<i
-inoremap <C-l> <ESC>v>i
-
 vnoremap <C-h> <ESC>v<<ESC>
 vnoremap <C-l> <ESC>v><ESC>
 
 
 " fast command line access in normal mode
 nmap <space> :
-
-" auto space at operations
-ino <= <space><=<space>
-ino *= <space>*=<space>
-ino /= <space>/=<space>
-ino >> <space>>><space>
-ino << <space><<<space>
-ino >= <space>>=<space>
-ino == <space>==<space>
-ino += <space>+=<space>
-ino && <space>&&<space>
-ino != <space>!=<space>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""
@@ -430,8 +422,7 @@ map <silent><Leader>r :RRB<CR>
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Change Working Directory to that of the current file
-cmap cwd lcd %:p:h
-cmap cd. lcd %:p:h
+cmap cd. lcd %:p:h<cr>
 
 " visual shifting (does not exit Visual mode)
 vnoremap < <gv
