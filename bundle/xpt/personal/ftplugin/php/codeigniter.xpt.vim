@@ -28,7 +28,7 @@ XPT thisplugin
 
 " =============== basic ==================
 XPT c_c hint=extend controller
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class `classname^ extends CI_Controller{ 
     function __construct()
     {
@@ -88,9 +88,6 @@ function (get`list^) {
             return $data;
         }
 }
-
-
-
 
 XPT echolist hint=php foreach in html
 <?php foreach($`var^ as `container^): ?>
