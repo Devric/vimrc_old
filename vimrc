@@ -141,16 +141,17 @@ set nojoinspaces
 """"""""""""""""""""""""""""""""""""""""""""""""
 " Dark background
 """"""""""""""""""""""""""""""""""""""""""""""""
-colorschem solarized
 set background=dark
-call togglebg#map("<F5>")
 
-
+" Color Scheme (only if GUI running) {{{
 if has("gui_running")
-set guioptions-=T " no toolbar
-"set guioptions-+m " no menu
-set transparency=5
+    colorschem solarized
+    call togglebg#map("<F5>")
+    set guioptions-=T " no toolbar
+    "set guioptions-+m " no menu
+    set transparency=5
 endif
+" }}}
 
 "Make the completion menus readable
 highlight Pmenu ctermfg=0 ctermbg=3

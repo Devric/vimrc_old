@@ -14,7 +14,7 @@ XPT this
 $(this)`^
 
 XPT $
-$(`'stuff'^)`^
+$('`stuff^')`^
 
 XPT docr
 $(document).ready(function() {
@@ -34,7 +34,7 @@ XPT getscript
 .getscript('`somescript.js')
 " ====================== animation ===========
 XPT animate
-.animate({`param1: value1^`, param2:value2}, `speed^)
+.animate({`param: value^` `...^, `param:value^, `...^}, `speed^)
 
 
 XPT slideu hint=slideup
@@ -118,16 +118,16 @@ XPT trim
 .trim('`string^')
 
 XPT next
-.next('`selector')
+.next('`selector^')
 
 XPT prev
-.prev('`selector')
+.prev('`selector^')
 
 XPT parent
-.parent('`selector')
+.parent('`selector^')
 
 XPT parents
-.parents('`selector')
+.parents('`selector^')
 
 XPT clone
 .clone()
@@ -167,7 +167,7 @@ XPT height
 .height(`interger^)`^
 
 XPT find
-.find('`selector')
+.find('`selector^')
 
 XPT select
 .select(funciton() {
