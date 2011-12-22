@@ -414,6 +414,11 @@ let g:RefreshRunningBrowserDefault = 'safari'
 " let g:RefreshRunningBrowserReturnFocus = '0'
 map <silent><Leader>r :RRB<CR>
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Coffee
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" watch on Insertleave
+au BufNewFile,BufReadPost *.coffee inoremap <buffer> <C-C> <Esc>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => MISC
