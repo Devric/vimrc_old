@@ -436,6 +436,9 @@ au BufNewFile,BufReadPost *.coffee inoremap <buffer> <C-C> <Esc>
 " auto compile on save
 autocmd BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
 
+" ctags work with coffee
+let g:tlist_coffee_settings = 'coffee;f:function;v:variable'
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => MISC
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -448,6 +451,13 @@ cmap cd. lcd %:p:h<cr>
 " visual shifting (does not exit Visual mode)
 vnoremap < <gv
 vnoremap > >gv 
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim pad
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:pad_dir = "~/.vim/notes/"
+let g:pad_format = "org"
 
 
 
