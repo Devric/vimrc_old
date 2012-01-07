@@ -316,6 +316,19 @@ autocmd BufRead,BufNew :call UMiniBufExplorer
 
 map <leader>u :TMiniBufExplorer<cr>
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => jSon Highlights
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+augroup json_autocmd 
+  autocmd! 
+  autocmd FileType json set autoindent 
+  autocmd FileType json set formatoptions=tcq2l 
+  autocmd FileType json set textwidth=78 shiftwidth=2 
+  autocmd FileType json set softtabstop=2 tabstop=8 
+  autocmd FileType json set expandtab 
+  autocmd FileType json set foldmethod=syntax 
+augroup END 
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Omni complete functions
@@ -419,6 +432,9 @@ map <silent><Leader>r :RRB<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " watch on Insertleave
 au BufNewFile,BufReadPost *.coffee inoremap <buffer> <C-C> <Esc>
+
+" auto compile on save
+autocmd BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => MISC
