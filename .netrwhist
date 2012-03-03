@@ -1,4 +1,9 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_cnt =7
 let g:netrw_dirhist_1='/Users/Devric/Sites/theworks/daikinrepo/sites/all/themes/daikinv2'
 let g:netrw_dirhist_2='/Users/Devric/Sites/learn/backbone_music_part2'
+let g:netrw_dirhist_3='/Users/Devric/Desktop/learnjq/rote'
+let g:netrw_dirhist_4='/Users/Devric/Desktop/btn'
+let g:netrw_dirhist_5='/Users/Devric/Sites/learn/learn_drupal/sites/all/modules/first'
+let g:netrw_dirhist_6='/Users/Devric/Sites/learn/learn_drupal/sites/default/modules/first'
+let g:netrw_dirhist_7='/Users/Devric/Sites/projects/lessxless.co.cc/sites/all/themes/lessxless'

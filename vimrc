@@ -143,6 +143,9 @@ set nojoinspaces
 """"""""""""""""""""""""""""""""""""""""""""""""
 set background=dark
 
+" !gui colorschem
+colorschem molokai
+
 " Color Scheme (only if GUI running) {{{
 if has("gui_running")
     colorschem solarized
@@ -152,6 +155,7 @@ if has("gui_running")
     set transparency=5
 endif
 " }}}
+
 
 "Make the completion menus readable
 highlight Pmenu ctermfg=0 ctermbg=3
