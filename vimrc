@@ -492,13 +492,25 @@ setlocal foldmethod=marker
 setlocal foldmarker={,}
 setlocal fillchars=fold:\ 
 
-
-
 " PHP Generated Code Highlights (HTML & SQL)
 let php_sql_query=1
 let php_htmlInStrings=1
 let g:php_folding=2
 set foldmethod=syntax
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => gist
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" show personal private when using Gist -l
+let g:gist_show_privates = 1
+
+" open browser after post 
+let g:gist_open_browser_after_post = 1
+
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => backup files
