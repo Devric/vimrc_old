@@ -15,8 +15,11 @@ filetype indent on
 " Set auto read when a file is changed outside
 set autoread
 
-" When vimrc is edited, reload it
-autocmd! bufwritepost vimrc source ~/.vim_runtime/vimrc
+"reload vimrc, When vimrc is edited, reload it
+if has("autocmd")
+  autocmd bufwritepost vimrc source ~/.vim_runtime/vimrc
+  autocmd bufwritepost .vimrc source $MYVIMRC
+endif
 
 set history=128
 
@@ -62,11 +65,6 @@ if !exists('g:AutoComplPop_Behavior')
             \   'pattern'   : printf('\(->\|::\|\$\)\k\{%d,}$', 0),
             \   'repeat'    : 0,
             \})
-endif
-
-"reload vimrc
-if has("autocmd")
-  autocmd bufwritepost .vimrc source $MYVIMRC
 endif
 
 " make 'vi' less anoying when commands dont work
@@ -136,7 +134,6 @@ set expandtab
 set shiftwidth=4
 set shiftround
 set nojoinspaces
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 " Dark background
@@ -443,6 +440,12 @@ autocmd BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
 " ctags work with coffee
 let g:tlist_coffee_settings = 'coffee;f:function;v:variable'
 
+" tab stop goes back to 2 with coffee
+au BufNewFile,BufReadPost *.coffee setl shiftwidth=2 tabstop=2 expandtab
+
+" fold by indentation
+au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => MISC
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -510,6 +513,12 @@ let g:gist_show_privates = 1
 " open browser after post 
 let g:gist_open_browser_after_post = 1
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Simple Note
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" login/pwd
+source ~/.simplenoterc
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
