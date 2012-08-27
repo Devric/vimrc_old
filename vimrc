@@ -446,6 +446,14 @@ au BufNewFile,BufReadPost *.coffee setl shiftwidth=2 tabstop=2 expandtab
 " fold by indentation
 au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Less, Stylus
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+auto BufWritePost,FileWritePost *.less silent !lessc <afile><afile>:r.css
+auto BufWritePost,FileWritePost *.styl silent !stylus <afile> >/dev/null
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => MISC
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
