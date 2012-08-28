@@ -435,7 +435,7 @@ map <silent><Leader>r :RRB<CR>
 au BufNewFile,BufReadPost *.coffee inoremap <buffer> <C-C> <Esc>
 
 " auto compile on save
-autocmd BufWritePost,FileWritePost *.coffee :silent !coffee -c <afile>
+autocmd BufWritePost,FileWritePost *.coffee :silent !coffee -c -b <afile>
 
 " ctags work with coffee
 let g:tlist_coffee_settings = 'coffee;f:function;v:variable'
@@ -453,6 +453,11 @@ au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
 auto BufWritePost,FileWritePost *.less silent !lessc <afile><afile>:r.css
 auto BufWritePost,FileWritePost *.styl silent !stylus <afile> >/dev/null
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Jade
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd BufWritePost,FileWritePost *.jade :silent !jade -P %
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => MISC
@@ -466,6 +471,9 @@ cmap cd. lcd %:p:h<cr>
 " visual shifting (does not exit Visual mode)
 vnoremap < <gv
 vnoremap > >gv 
+
+" Remove trailing white space before save
+autocmd! BufWritePost :%s/\s\+$//e
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
