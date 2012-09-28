@@ -146,7 +146,7 @@ colorschem molokai
 " Color Scheme (only if GUI running) {{{
 if has("gui_running")
     colorschem solarized
-    call togglebg#map("<F5>")
+    call togglebg#map("<F6>")
     set guioptions-=T " no toolbar
     "set guioptions-+m " no menu
     set transparency=5
@@ -488,9 +488,18 @@ let g:pad_format = "org"
 " => Php documentator
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 source ~/.vim/php-doc.vim 
-inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i 
-nnoremap <C-P> :call PhpDocSingle()<CR> 
-vnoremap <C-P> :call PhpDocRange()<CR> 
+inoremap <C-p> <ESC>:call PhpDocSingle()<CR>i 
+nnoremap <C-p> :call PhpDocSingle()<CR> 
+vnoremap <C-p> :call PhpDocRange()<CR> 
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => CtrlP finder
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ctrlp_map = '<c-p_p>'
+let g:ctrlp_working_path_mode = '.' " make it open the root directory
+nnoremap <leader>x :CtrlP<CR>
+nnoremap <leader>X :ClearCtrlPCache<cr>\|:CtrlP<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
