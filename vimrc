@@ -106,7 +106,7 @@ if has("autocmd")
 endif
 "This is necessary to allow pasting from outside vim. It turns off auto stuff.
 "You can tell you are in paste mode when the ruler is not visible
-set pastetoggle=<F2>
+set pastetoggle=<F9>
 "Usually annoys me
 set wrapmargin =0
 set linebreak
@@ -140,16 +140,20 @@ set nojoinspaces
 """"""""""""""""""""""""""""""""""""""""""""""""
 set background=dark
 
-" !gui colorschem
-colorschem molokai
 
 " Color Scheme (only if GUI running) {{{
 if has("gui_running")
     colorschem solarized
-    call togglebg#map("<F6>")
+    call togglebg#map("<F5>")
     set guioptions-=T " no toolbar
     "set guioptions-+m " no menu
     set transparency=5
+
+else " !gui colorschem
+
+    colorschem badwolf
+    let g:badwolf_html_link_underline = 1 " Turn off HTML link underlining
+    let g:badwolf_css_props_highlight = 1 " Turn on CSS properties highlighting
 endif
 " }}}
 
@@ -271,9 +275,7 @@ nmap <space> :
 " }
 
 " Taglist Variables {
-
-
-       map <F1> :silent! Tlist<CR>
+       map <F3> :silent! Tlist<CR>
 
        "let Tlist_Ctags_Cmd='/opt/local/var/macports/software/ctags/5.8_0/opt/local/bin/ctags'
        let Tlist_Ctags_Cmd='/usr/local/bin/ctags'
@@ -409,7 +411,7 @@ endfunction
 " => NerdTree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " NerdTree {
-        map <C-e> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
+        map <F1> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
 
         let NERDTreeShowBookmarks=1
         let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
@@ -526,6 +528,12 @@ let php_htmlInStrings=1
 let g:php_folding=2
 set foldmethod=syntax
 
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => gundo :python
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <F2> :GundoToggle<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
