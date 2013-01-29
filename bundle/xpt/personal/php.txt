@@ -1,4 +1,4 @@
-this file use for future cheat sheet creation
+ this file use for future cheat sheet creation
 plugin used 'vim org mode', 'tabularize'
 
 set ft=org

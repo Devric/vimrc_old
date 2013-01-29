@@ -527,7 +527,14 @@ let php_sql_query=1
 let php_htmlInStrings=1
 let g:php_folding=2
 set foldmethod=syntax
-
+ 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => dbtext
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:dbext_default_profile_dyo_dev = 'type=MYSQL:user=devric:passwd=1111:host=127.0.0.1:dbname=dyo_dev'
+let g:dbext_default_profile_nara_dev = 'type=MYSQL:user=devric:passwd=1111:host=127.0.0.1:dbname=nara_dev'
+let g:dbext_default_profile_alice = 'type=MYSQL:user=devric:passwd=1111:host=127.0.0.1:dbname=alice_live'
+let g:dbext_default_profile_bob = 'type=MYSQL:user=devric:passwd=1111:host=127.0.0.1:dbname=bob_live'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
