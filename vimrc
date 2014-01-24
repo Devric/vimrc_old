@@ -80,6 +80,7 @@ set smartcase
 set hlsearch "highlight search things
 hi htmlTag guifg=#00bdec guibg=#200000 gui=bold "highlight html tags block
 
+
 set incsearch "make search act like search in modern browsers
 set nolazyredraw "dont redraw while executing macros
 
@@ -143,11 +144,20 @@ set background=dark
 
 " Color Scheme (only if GUI running) {{{
 if has("gui_running")
-    colorschem solarized
-    call togglebg#map("<F5>")
+
+    colorschem plum
+    nnoremap <silent> <F5> :exe 'set bg=' . (&bg == 'dark' ? 'light' : 'dark')<CR>
+
+    " those are solarize
+    "colorschem solarized
+    "call togglebg#map("<F5>")
+
     set guioptions-=T " no toolbar
     "set guioptions-+m " no menu
     set transparency=5
+
+    " call plum to 
+    let g:plum_set_bg_at_start = 1
 
 else " !gui colorschem
 
@@ -199,7 +209,7 @@ endif
 let mapleader = ";"
 
 "Map escape key to jj -- much faster
-imap jj <esc>
+imap jk <esc>
 
 imap <Leader>date   <C-R>=strftime("%d/%m/%y")<CR>
 imap <Leader>time   <C-R>=strftime("%T")<CR>
@@ -221,6 +231,10 @@ imap <silent> <S-tab> <C-v><tab>
 "allow deleting selection without updating the clipboard (yank buffer)
 vnoremap x "_x
 
+" map Enter to tabalign
+vnoremap <silent> <Enter> :Tabularize /
+
+
 " Smart way to move btw. windows
 map <A-j> <C-W>j
 map <A-k> <C-W>k
@@ -236,19 +250,10 @@ map <leader>te :tabedit
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
 
-" 1 current
-" 2 m
-" 3 v
-" 4 c
-" 5 css
-" 6 jss
+" ack find file
+let g:ackprg = 'ag --nogroup --nocolor --column'         " replace ack.vim with the_silver_seracher
+nmap <leader>g :Ack <C-R>=expand("<cword>")<CR><CR>
 
-nmap <leader>t1 :tabfirst<cr>
-nmap <leader>t2 2gt
-nmap <leader>t3 3gt
-nmap <leader>t4 4gt
-nmap <leader>t5 5gt
-nmap <leader>t6 6gt
 
 nmap <leader>s :vsp<cr>
 
@@ -421,14 +426,6 @@ endfunction
         let NERDTreeKeepTreeInNewTab=1
     " }
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => browser refresh
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:RefreshRunningBrowserDefault = 'safari'
-" let g:RefreshRunningBrowserDefault = 'chrome'
-" let g:RefreshRunningBrowserDefault = 'firefox'
-" let g:RefreshRunningBrowserReturnFocus = '0'
-map <silent><Leader>r :RRB<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Coffee
@@ -541,6 +538,15 @@ let g:dbext_default_profile_bob = 'type=MYSQL:user=devric:passwd=1111:host=127.0
 " => gundo :python
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <F2> :GundoToggle<CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => haste bin,  gem install haste
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" just copy
+map <leader>h :%! haste \| pbcopy<CR>u<CR>
+" copy and quit
+map <leader>hh :%! haste \| pbcopy<CR>:q!<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
