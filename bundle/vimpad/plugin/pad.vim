@@ -85,11 +85,11 @@ if g:pad_use_default_mappings == 1
 	else " the previous mappings don't work in the terminal
     call s:CreateMapping("<leader><esc>", "ListPads", "normal")
     call s:CreateMapping("<leader><esc>", "ListPads", "insert")
-    call s:CreateMapping("<leader>n", "OpenPad", "normal")
-    call s:CreateMapping("<leader>n", "OpenPad", "insert")
+    call s:CreateMapping("<leader>N", "OpenPad", "normal")
+    call s:CreateMapping("<leader>N", "OpenPad", "insert")
 	endif
 
-  call s:CreateMapping("<leader>s", "SearchPads", "normal")
+  call s:CreateMapping("<leader>S", "SearchPads", "normal")
 endif
 
 " To update the date when files are modified
