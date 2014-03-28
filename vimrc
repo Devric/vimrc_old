@@ -455,7 +455,7 @@ auto BufWritePost,FileWritePost *.styl silent !stylus <afile> >/dev/null
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Jade
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd BufWritePost,FileWritePost *.jade :silent !jade -P %
+" autocmd BufWritePost,FileWritePost *.jade :silent !jade -P %
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -601,3 +601,9 @@ function! InitBackupDir()
     endif
 endfunction          
 call InitBackupDir()
+
+
+" vim-js-context-coloring
+" https://github.com/bigfish/vim-js-context-coloring
+" colour table : http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
+let g:js_context_colors = [ 250, 10, 11, 173, 1, 161, 81 ]

@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 notes/
 tmp/
+=======
+*.pyc
+*.swp
+>>>>>>> 130b181d6533ecfa71559243d3e2b6ade2f4c272
