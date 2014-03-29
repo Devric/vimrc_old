@@ -541,12 +541,9 @@ nnoremap <F2> :GundoToggle<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => haste bin,  gem install haste
+" => Extradite
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" just copy
-map <leader>h :%! haste \| pbcopy<CR>u<CR>
-" copy and quit
-map <leader>hh :%! haste \| pbcopy<CR>:q!<CR>
+nnoremap <F4> :Extradite<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
