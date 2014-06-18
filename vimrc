@@ -4,6 +4,32 @@ set nocompatible
 "Pathogen
 """""""""""""""""""""""""""""""""""""""""""""""
 call pathogen#runtime_append_all_bundles()
+call pathogen#helptags() " Generate all tags
+
+"""""""""""""""""""""""""""""""""""""""""""""""
+"XPT
+"""""""""""""""""""""""""""""""""""""""""""""""
+let g:xptemplate_key = '<C-Space>'
+
+"""""""""""""""""""""""""""""""""""""""""""""""
+" => Emmet
+"""""""""""""""""""""""""""""""""""""""""""""""
+let g:use_emmet_complete_tag = 1
+"
+"""""""""""""""""""""""""""""""""""""""""""""""
+" => JSX highlight
+"""""""""""""""""""""""""""""""""""""""""""""""
+let javascript_enable_domhtmlcss = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""
+" => Tern
+"""""""""""""""""""""""""""""""""""""""""""""""
+let g:tern_show_argument_hints   = 'on_move'
+let g:tern_show_signature_in_pum = 1
+map <leader>tt :TernType<CR>
+map <leader>td :TernDef<CR>
+map <leader>tD :TernDoc<CR>
+map <leader>tr :TernRename<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -16,10 +42,10 @@ filetype indent on
 set autoread
 
 "reload vimrc, When vimrc is edited, reload it
-if has("autocmd")
-  autocmd bufwritepost vimrc source ~/.vim_runtime/vimrc
-  autocmd bufwritepost .vimrc source $MYVIMRC
-endif
+" if has("autocmd")
+"   autocmd bufwritepost vimrc source ~/.vim_runtime/vimrc
+"   autocmd bufwritepost .vimrc source $MYVIMRC
+" endif
 
 set history=128
 
@@ -27,11 +53,10 @@ set viminfo='20,\"50    " read/write a .viminfo file, don't store more
                         " than 50 lines of registers
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => php manual 
+" => auto relative numbering
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" set runtimepath+=~/.vim/doc/
-" autocmd BufNewFile,Bufread *.php,*.php3,*.php4 set keywordprg="help"
-
+au InsertEnter * :set nu
+au InsertLeave * :set rnu
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -111,7 +136,9 @@ set pastetoggle=<F9>
 "Usually annoys me
 set wrapmargin =0
 set linebreak
+set cursorline
 set number
+set relativenumber
 
 "Ignore these files when completing names and in Explorer
 set wildignore=.svn,CVS,.git,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif
@@ -160,7 +187,6 @@ if has("gui_running")
     let g:plum_set_bg_at_start = 1
 
 else " !gui colorschem
-
     colorschem badwolf
     let g:badwolf_html_link_underline = 1 " Turn off HTML link underlining
     let g:badwolf_css_props_highlight = 1 " Turn on CSS properties highlighting
@@ -176,8 +202,27 @@ highlight PmenuSel ctermfg=0 ctermbg=7
 "at least, but it is not in Vim 7.0.17.
 if &bg == "dark"
   highlight MatchParen ctermbg=darkblue guibg=blue
+
+  " vim-js-context-coloring : https://github.com/bigfish/vim-js-context-coloring
+  " colour table : http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
+  let g:js_context_colors = [ 250, 10, 11, 173, 1, 161, 81 ]
 endif
 
+if &bg == "light"
+  let g:js_context_colors = [ 22, 24, 3, 162, 1, 161, 57 ]
+endif
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Synstatic linting
+""""""""""""""""""""""""""""""""""""""""""""""""
+let g:synstatic_check_on_open=0
+
+let g:syntastic_error_symbol = '✗'            " Error Symbol
+let g:syntastic_warning_symbol = '⚠'          " Warning Symbol
+let g:syntastic_style_error_symbol = '⚡'      " Style Error Symbol
+let g:syntastic_style_warning_symbol = '⚡'    " Style Warning Symbol
+
+let g:Synstatic_javascript_jshint_conf="~/.jshintrc"
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 " Syntax highlighting
@@ -234,12 +279,37 @@ vnoremap x "_x
 " map Enter to tabalign
 vnoremap <silent> <Enter> :Tabularize /
 
-
 " Smart way to move btw. windows
-map <A-j> <C-W>j
-map <A-k> <C-W>k
-map <A-h> <C-W>h
-map <A-l> <C-W>l
+"map <A-j> <C-W>j
+"map <A-k> <C-W>k
+"map <A-h> <C-W>h
+"map <A-l> <C-W>l
+
+if exists('$TMUX')
+  function! TmuxOrSplitSwitch(wincmd, tmuxdir)
+    let previous_winnr = winnr()
+    silent! execute "wincmd " . a:wincmd
+    if previous_winnr == winnr()
+      call system("tmux select-pane -" . a:tmuxdir)
+      redraw!
+    endif
+  endfunction
+
+  let previous_title = substitute(system("tmux display-message -p '#{pane_title}'"), '\n', '', '')
+  let &t_ti = "\<Esc>]2;vim\<Esc>\\" . &t_ti
+  let &t_te = "\<Esc>]2;". previous_title . "\<Esc>\\" . &t_te
+
+  nnoremap <silent> <C-h> :call TmuxOrSplitSwitch('h', 'L')<cr>
+  nnoremap <silent> <C-j> :call TmuxOrSplitSwitch('j', 'D')<cr>
+  nnoremap <silent> <C-k> :call TmuxOrSplitSwitch('k', 'U')<cr>
+  nnoremap <silent> <C-l> :call TmuxOrSplitSwitch('l', 'R')<cr>
+else
+  map <C-h> <C-w>h
+  map <C-j> <C-w>j
+  map <C-k> <C-w>k
+  map <C-l> <C-w>l
+endif
+
 
 " Close the current buffer
 map <leader>bd :bd<cr>
@@ -253,8 +323,6 @@ map <leader>tm :tabmove
 " ack find file
 let g:ackprg = 'ag --nogroup --nocolor --column'         " replace ack.vim with the_silver_seracher
 nmap <leader>g :Ack <C-R>=expand("<cword>")<CR><CR>
-
-
 nmap <leader>s :vsp<cr>
 
 " Use the arrows to something usefull
@@ -303,22 +371,19 @@ nmap <space> :
        let g:ctags_statusline=1
        " Override how taglist does javascript
        let g:tlist_javascript_settings = 'javascript;f:function;c:class;m:method;p:property;v:global'
-       " }
+" }
 
 
 """"""""""""""""""""""""""""""
 " => Minibuffer plugin
 """"""""""""""""""""""""""""""
-"let g:miniBufExplVSplit = 25          " assing column widht in vertical mode
-let g:miniBufExplModSelTarget = 1      " active when using with taglist
-let g:miniBufExplorerMoreThanOne = 2   " only activate when more then one buffer
-let g:miniBufExplUseSingleClick = 1    " single click to change file
-let g:miniBufExplMapWindowNavVim = 1   " hjkl mappig
-let g:miniBufExplSplitBelow=0          " 1= below, 0= above
+let g:miniBufExplModSelTarget      = 1 " active when using with taglist
+let g:miniBufExplorerMoreThanOne   = 2 " only activate when more then one buffer
+let g:miniBufExplUseSingleClick    = 1 " single click to change file
+let g:miniBufExplMapWindowNavVim   = 1 " hjkl mappig
+let g:miniBufExplSplitBelow        = 0 " 1 below, 0 above
 let g:miniBufExplMapCTabSwitchBufs = 1 " tab s-tab navigation
-
-
-let g:bufExplorerSortBy = "name"
+let g:bufExplorerSortBy            = "name"
 
 autocmd BufRead,BufNew :call UMiniBufExplorer
 
@@ -380,7 +445,6 @@ nmap <Leader>sj :SplitjoinJoin<cr>
 nmap <Leader>ss :SplitjoinSplit<cr>
 
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => filetype
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -391,13 +455,6 @@ au BufRead,BufNewFile *.txt		setfiletype org
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => tabular
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if exists(":Tabularize")
-  nmap <Leader>a= :Tabularize /=<CR>
-  vmap <Leader>a= :Tabularize /=<CR>
-  nmap <Leader>a; :Tabularize /:<CR>
-  vmap <Leader>a; :Tabularize /:<CR>
-endif
-
 inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
  
 function! s:align()
@@ -415,26 +472,24 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => NerdTree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    " NerdTree {
-        map <F1> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
+map <F1> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
 
-        let NERDTreeShowBookmarks=1
-        let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-        let NERDTreeChDirMode=0
-        let NERDTreeQuitOnOpen=1
-        let NERDTreeShowHidden=1
-        let NERDTreeKeepTreeInNewTab=1
-    " }
+let NERDTreeShowBookmarks=1
+let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+let NERDTreeChDirMode=0
+let NERDTreeQuitOnOpen=1
+let NERDTreeShowHidden=1
+let NERDTreeKeepTreeInNewTab=1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Coffee
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " watch on Insertleave
-au BufNewFile,BufReadPost *.coffee inoremap <buffer> <C-C> <Esc>
+" au BufNewFile,BufReadPost *.coffee inoremap <buffer> <C-C> <Esc>
 
 " auto compile on save
-autocmd BufWritePost,FileWritePost *.coffee :silent !coffee -c -b <afile>
+" autocmd BufWritePost,FileWritePost *.coffee :silent !coffee -c -b <afile>
 
 " ctags work with coffee
 let g:tlist_coffee_settings = 'coffee;f:function;v:variable'
@@ -449,8 +504,8 @@ au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Less, Stylus
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-auto BufWritePost,FileWritePost *.less silent !lessc <afile><afile>:r.css
-auto BufWritePost,FileWritePost *.styl silent !stylus <afile> >/dev/null
+" auto BufWritePost,FileWritePost *.less silent !lessc <afile><afile>:r.css
+" auto BufWritePost,FileWritePost *.styl silent !stylus <afile> >/dev/null
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Jade
@@ -482,11 +537,10 @@ let g:pad_dir = "~/.vim/notes/"
 let g:pad_format = "org"
 
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Php documentator
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-source ~/.vim/php-doc.vim 
+"source ~/.vim/php-doc.vim 
 inoremap <C-p> <ESC>:call PhpDocSingle()<CR>i 
 nnoremap <C-p> :call PhpDocSingle()<CR> 
 vnoremap <C-p> :call PhpDocRange()<CR> 
@@ -524,39 +578,22 @@ let php_sql_query=1
 let php_htmlInStrings=1
 let g:php_folding=2
 set foldmethod=syntax
- 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => dbtext
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:dbext_default_profile_dyo_dev = 'type=MYSQL:user=devric:passwd=1111:host=127.0.0.1:dbname=dyo_dev'
-let g:dbext_default_profile_nara_dev = 'type=MYSQL:user=devric:passwd=1111:host=127.0.0.1:dbname=nara_dev'
-let g:dbext_default_profile_alice = 'type=MYSQL:user=devric:passwd=1111:host=127.0.0.1:dbname=alice_live'
-let g:dbext_default_profile_bob = 'type=MYSQL:user=devric:passwd=1111:host=127.0.0.1:dbname=bob_live'
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => gundo :python
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <F2> :GundoToggle<CR>
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Extradite
+" => Extradite / git commit browser
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <F4> :Extradite<CR>
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => gist
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" show personal private when using Gist -l
-let g:gist_show_privates = 1
-
-" open browser after post 
-let g:gist_open_browser_after_post = 1
-
-
+let g:gist_show_privates = 1 " show personal private when using Gist -l
+let g:gist_open_browser_after_post = 1 " open browser after post 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => backup files
@@ -599,8 +636,3 @@ function! InitBackupDir()
 endfunction          
 call InitBackupDir()
 
-
-" vim-js-context-coloring
-" https://github.com/bigfish/vim-js-context-coloring
-" colour table : http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
-let g:js_context_colors = [ 250, 10, 11, 173, 1, 161, 81 ]
